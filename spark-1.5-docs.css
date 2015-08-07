@@ -1,0 +1,13 @@
+.username-field {
+  text-align: center;
+  font-size: 18px;
+  border-radius: 3px;
+  box-sizing: border-box;
+  padding: .375em .75em;
+  transition: border 300ms ease-in, box-shadow 300ms ease-in;
+  line-height: 1.5em !important;
+  font-family: 'Source Sans Pro', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  outline: none;
+  -webkit-font-smoothing: antialiased;
+}

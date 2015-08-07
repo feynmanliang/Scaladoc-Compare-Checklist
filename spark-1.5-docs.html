@@ -3,23 +3,37 @@
 </head>
 
 <body>
-  <div class="container">
-    <h1>Spark 1.4.2-SNAPSHOT -> SPARK 1.5.0-SNAPSHOT ScalaDoc Diffs</h1>
+  <div class="container-fluid">
+    <h1>MLlib 1.4.2 vs 1.5.0 ScalaDoc Diffs</h1>
+
 
     {{> fileList}}
   </div>
 </body>
 
+<template name="username">
+  <div class="row">
+    <form>
+      <input class="center-block username-field" type="TEXT" name="username" placeholder="Enter username..." />
+    </form>
+  </div>
+</template>
+
 <template name="fileList">
-  {{#each data}}
-    {{> file}}
-  {{/each}}
+  {{#if hasUsername}}
+    <div>Reviewing as "{{user}}"; <a href="#" id="logout">Change username</a></div>
+    {{#each files}}
+      {{> file}}
+    {{/each}}
+  {{else}}
+    {{> username}}
+  {{/if}}
 </template>
 
 <template name="file">
   <div class="row">
     <div class="col-lg-12">
-      <h3>{{fileName}}</h3>
+      <h3>{{filename}}</h3>
     </div>
   </div>
   <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -30,16 +44,24 @@
 </template>
 
 <template name="diff">
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="heading{{diffId}}">
-      <h4 class="panel-title">
-        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{diffId}}" aria-expanded="true" aria-controls="collapse{{diffId}}">
-          {{location}}
-        </a>
-      </h4>
+  <a role="button" data-parent="#accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="heading{{diffId}}">
+        <h4 class="panel-title">
+          {{#if this.checked}}
+            <s>{{location}}</s>
+            <code>Reviewed by {{reviewer}}</code>
+          {{else}}
+            {{location}}
+          {{/if}}
+          <span class="pull-right">
+            <span class="glyphicon glyphicon-{{checked}}" aria-hidden="true"></span>
+          </span>
+        </h4>
+      </div>
     </div>
-  </div>
-  <div id="collapse{{diffId}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{{diffId}}">
+  </a>
+  <div id="collapse{{diffId}}" class="panel-collapse collapse {{in}}" role="tabpanel" aria-labelledby="heading{{diffId}}">
     <div class="panel-body">
       <div class="row">
         <div class="col-md-6">

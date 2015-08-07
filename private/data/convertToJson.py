@@ -9,11 +9,11 @@ def is_number(s):
     except ValueError:
         return False
 
-res = []
+diffs = []
+fileNames = []
 state = "FILE"
 with open('scaladoc-compare.diff', 'r') as f:
     fName = None
-    diffs = []
     loc = None
     add = []
     remove = []
@@ -25,7 +25,7 @@ with open('scaladoc-compare.diff', 'r') as f:
         elif state == "DIFF":
             if is_number(line[0]):
                 if loc != None:
-                    diffs.append({ "location": loc, "add": add, "remove": remove })
+                    diffs.append({ "filename": fName, "location": loc, "add": add, "remove": remove })
                 loc = line.strip()
                 add = []
                 remove = []
@@ -34,11 +34,18 @@ with open('scaladoc-compare.diff', 'r') as f:
             elif line[0] == "<":
                 remove.append(line.strip())
             elif line[0] == "\n":
-                res.append({ "fileName": fName, "diffs": diffs })
-                diffs = []
+                fileNames.append({ "filename" : fName })
                 state = "FILE"
             else:
                 continue
 
-print(json.dumps(res))
+diffs = filter(lambda x: "org/apache/spark/" in x["filename"], diffs)
+fileNames = filter(lambda x: "org/apache/spark/" in x["filename"], fileNames)
 
+#print(json.dumps(fileNames))
+#print(json.dumps(diffs))
+with open('private/data/files.json','w') as f:
+    f.write(json.dumps(fileNames, sort_keys=True, indent=4))
+
+with open('private/data/diffs.json','w') as f:
+    f.write(json.dumps(diffs, sort_keys=True, indent=4))
