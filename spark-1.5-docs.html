@@ -1,0 +1,58 @@
+<head>
+  <title>spark-1.5-docs</title>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Spark 1.4.2-SNAPSHOT -> SPARK 1.5.0-SNAPSHOT ScalaDoc Diffs</h1>
+
+    {{> fileList}}
+  </div>
+</body>
+
+<template name="fileList">
+  {{#each data}}
+    {{> file}}
+  {{/each}}
+</template>
+
+<template name="file">
+  <div class="row">
+    <div class="col-lg-12">
+      <h3>{{fileName}}</h3>
+    </div>
+  </div>
+  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    {{#each diffs}}
+      {{> diff}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="diff">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading{{diffId}}">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{diffId}}" aria-expanded="true" aria-controls="collapse{{diffId}}">
+          {{location}}
+        </a>
+      </h4>
+    </div>
+  </div>
+  <div id="collapse{{diffId}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{{diffId}}">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-6">
+          {{#if removeNonempty}}
+            <pre class="bg-danger">{{#each remove}}{{this}}<br />{{/each}}</pre>
+          {{/if}}
+        </div>
+        <div class="col-md-6">
+          {{#if addNonempty}}
+            <pre class="bg-success">{{#each add}}{{this}}<br />{{/each}}</pre>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
